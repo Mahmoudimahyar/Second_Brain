@@ -85,7 +85,7 @@ orchestration = [
 # known-issues.md §1); we only need its CLI on $PATH, not as a Python
 # dep here.
 website-crawl = [
-  "crawl4ai>=0.8,<0.9",
+  "crawl4ai>=0.9.3,<0.10",
   "pikepdf>=8",          # PDF metadata + repair
   "tabula-py>=2.9",      # Robust HTML/PDF table extraction
   "croniter>=2",         # Cadence parsing + next-run preview
