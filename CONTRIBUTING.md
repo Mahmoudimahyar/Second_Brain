@@ -68,6 +68,10 @@ ruff check .                                 # ratchet — not clean yet
 mypy src tools                               # ratchet — strict mode, not clean yet
 ```
 
+**Before a release, run the suite in a *fresh* virtualenv**, not your working one. A long-lived
+environment hides version drift: the first public CI run of this repository was red because a
+new test had only ever been run against an older Typer (see `CHANGELOG.md`, 0.1.1).
+
 Being straight about the ratchets: the configured ruff rule set and `mypy --strict` both
 report outstanding findings today (the largest group is `PLC0415`, flagging the codebase's
 deliberate lazy imports). They run on every CI build as informational jobs. PRs should not

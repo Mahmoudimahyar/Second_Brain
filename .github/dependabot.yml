@@ -5,12 +5,22 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # pyproject.toml declares compatible RANGES, not pins. Only open a PR when a new release
+    # falls outside the declared range - do not raise lower bounds just because a newer
+    # version exists.
+    versioning-strategy: increase-if-necessary
     groups:
       python-minor-patch:
         update-types: ["minor", "patch"]
     ignore:
       # Pinned on purpose: upstream archived; see ADR-001 (docs/11-decisions/).
       - dependency-name: "kuzu"
+      # mcp 2.x changed the low-level Server API (list_tools / Tool.inputSchema); the cap in
+      # pyproject.toml is deliberate until the two MCP servers are ported.
+      - dependency-name: "mcp"
+        update-types: ["version-update:semver-major"]
+      # Held at 0.8.x per ADR-019 until the crawl adapter is re-validated against 0.9.
+      - dependency-name: "crawl4ai"
 
   - package-ecosystem: npm
     directory: "/web"
@@ -25,3 +35,6 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

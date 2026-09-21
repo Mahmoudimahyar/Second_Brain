@@ -10,6 +10,22 @@ For what is actually wired and validated *right now*, the single source of truth
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-09-21
+
+The first public CI run was red within minutes of 0.1.0 — caught, reproduced, fixed.
+
+### Fixed
+- **CLI reference generator broke under Typer ≥ 0.26**, which vendors its own copy of click: a
+  `TyperGroup` is no longer a `click.Group`, so an `isinstance` check failed and took the
+  "reference pages are current" tests with it. The generator now walks the command tree by duck
+  typing and produces byte-identical pages under both library generations. Root cause of the
+  miss: the new tests had been run in a long-lived virtualenv, not a fresh one — CI did its job.
+
+### Changed
+- CI uses current major versions of the GitHub actions (Node 24 runtime).
+- Dependabot only proposes a Python change when a release falls *outside* a declared range, and
+  ignores the deliberate caps (`mcp < 2`, `crawl4ai 0.8.x`, `kuzu`), each with its reason.
+
 ## [0.1.0] — 2026-09-21 · first public release
 
 The package version (`pyproject.toml`, `CITATION.cff`). Everything below this entry is the

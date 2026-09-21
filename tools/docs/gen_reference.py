@@ -15,7 +15,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import click
 import typer
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -31,21 +30,39 @@ def _first_paragraph(text: str | None) -> str:
     return " ".join(line.strip() for line in para.splitlines()).replace("|", "\\|")
 
 
-def _default(param: click.Parameter) -> str:
-    value = param.default
-    if value is None or value == () or callable(value) or isinstance(param, click.Argument):
+# The command tree is walked by duck typing, not `isinstance(…, click.Group)`: newer Typer
+# releases vendor their own copy of click, so its classes are no longer click's classes.
+
+
+def _is_group(command: Any) -> bool:
+    return hasattr(command, "list_commands") and hasattr(command, "get_command")
+
+
+def _is_argument(param: Any) -> bool:
+    return getattr(param, "param_type_name", "") == "argument"
+
+
+def _context(command: Any) -> Any:
+    return command.context_class(command)
+
+
+def _default(param: Any) -> str:
+    value = getattr(param, "default", None)
+    if value is None or value == () or callable(value) or _is_argument(param):
+        return ""
+    if "UNSET" in repr(value) or "Sentinel" in repr(value):
         return ""
     if isinstance(value, bool):
         return "on" if value else "off"
     return f"`{str(value).replace(chr(92), '/')}`" if str(value) != "" else ""
 
 
-def _param_rows(command: click.Command) -> list[str]:
+def _param_rows(command: Any) -> list[str]:
     rows: list[str] = []
     for param in command.params:
         if param.name == "help":
             continue
-        if isinstance(param, click.Argument):
+        if _is_argument(param):
             name = f"`{(param.name or '').upper()}`" + ("" if param.required else " *(optional)*")
         else:
             name = ", ".join(f"`{opt}`" for opt in (*param.opts, *param.secondary_opts))
@@ -54,12 +71,12 @@ def _param_rows(command: click.Command) -> list[str]:
     return rows
 
 
-def _walk(command: click.Command, path: list[str], out: list[str]) -> None:
-    if isinstance(command, click.Group):
+def _walk(command: Any, path: list[str], out: list[str]) -> None:
+    if _is_group(command):
         if len(path) > 1:
             out.append(f"## `{' '.join(path)}`\n\n{_first_paragraph(command.help)}\n")
-        for name in command.list_commands(click.Context(command)):
-            sub = command.get_command(click.Context(command), name)
+        for name in command.list_commands(_context(command)):
+            sub = command.get_command(_context(command), name)
             if sub is not None:
                 _walk(sub, [*path, name], out)
         return
@@ -72,8 +89,8 @@ def _walk(command: click.Command, path: list[str], out: list[str]) -> None:
 def render_cli() -> str:
     from src.cli import app  # noqa: PLC0415 — keep Typer/CLI import cost out of module import
 
-    root = typer.main.get_command(app)
-    assert isinstance(root, click.Group)
+    root: Any = typer.main.get_command(app)
+    assert _is_group(root)
     out = [
         "# CLI reference\n",
         "Every command of the `secbrain` CLI, generated from the code. Global options come "
@@ -82,13 +99,13 @@ def render_cli() -> str:
         "| Argument / option | Meaning | Default |\n|---|---|---|\n" + "\n".join(_param_rows(root)) + "\n",
         "## Top-level commands\n",
     ]
-    ctx = click.Context(root)
-    groups: list[tuple[str, click.Command]] = []
+    ctx = _context(root)
+    groups: list[tuple[str, Any]] = []
     for name in root.list_commands(ctx):
         sub = root.get_command(ctx, name)
         if sub is None:
             continue
-        if isinstance(sub, click.Group):
+        if _is_group(sub):
             groups.append((name, sub))
         else:
             _walk(sub, ["secbrain", name], out)

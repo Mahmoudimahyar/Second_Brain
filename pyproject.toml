@@ -1,6 +1,6 @@
 [project]
 name = "secbrain"
-version = "0.1.0"
+version = "0.1.1"
 description = "Trust-tier-aware, self-correcting knowledge-graph engine: anchors noisy community text to authoritative ground truth, resolves conflicts, and answers with counted, cited evidence."
 readme = "README.md"
 requires-python = ">=3.12"
