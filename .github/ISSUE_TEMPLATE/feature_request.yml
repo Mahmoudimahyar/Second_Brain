@@ -1,0 +1,43 @@
+name: Feature / capability proposal
+description: Propose a new capability, connector, or retrieval primitive.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project gates new work on evidence. Before proposing breadth, check
+        `docs/00-bootstrap/implementation-status.md` — new feature areas do not open while
+        the core vertical slice is below `Validated`.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can't be answered / done today? Who is blocked?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed capability
+      description: Inputs, outputs, and where it would be wired (CLI command, Prefect flow, API route, or MCP tool).
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence it is worth building
+      description: Papers, benchmarks, eval numbers, or a failing gold-set case. Cite with dates.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How would we know it is `Wired` and then `Validated` on real data?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues, ADRs (`docs/11-decisions/`), and the gap register.
+          required: true
+        - label: This does not require committing third-party forum content or licensed data.
+          required: true

@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software or its methods, please cite it as below."
+type: software
+title: "SecBrain: a trust-tier-aware, self-correcting knowledge-graph engine"
+abstract: >-
+  SecBrain anchors large volumes of noisy community text to authoritative ground truth in a
+  bitemporal, trust-tiered knowledge graph; resolves conflicts with a temporal-first,
+  source-trust-weighted cascade; and answers questions as measured estimates with confidence
+  intervals and per-statistic provenance, abstaining when evidence is insufficient.
+authors:
+  - family-names: Mahmoudi
+    given-names: Mahyar
+repository-code: "https://github.com/Mahmoudimahyar/Second_Brain"
+license: Apache-2.0
+version: 0.1.0
+date-released: "2026-09-21"
+keywords:
+  - knowledge graph
+  - GraphRAG
+  - retrieval-augmented generation
+  - entity resolution
+  - truth discovery
+  - conflict resolution
+  - bitemporal data
+  - Model Context Protocol

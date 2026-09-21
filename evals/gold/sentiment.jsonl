@@ -1,0 +1,12 @@
+{"text": "Just got accepted to NYU! Best day ever, I am crying happy tears.", "expected_verdict": "positive", "expected_target_entities": ["NYU"], "note": "clear positive"}
+{"text": "Tufts rejected me again. I'm so done with this cycle.", "expected_verdict": "negative", "expected_target_entities": ["Tufts"], "note": "clear negative"}
+{"text": "Anyone know when CBSE scores release? Driving me nuts waiting.", "expected_verdict": "neutral", "expected_target_entities": [], "note": "neutral/anxious but no entity sentiment"}
+{"text": "Loved Harvard but hated UCLA's interview process. Mixed feelings overall.", "expected_verdict": "mixed", "expected_target_entities": ["Harvard", "UCLA"], "note": "mixed across two schools"}
+{"text": "Got my Penn acceptance letter today, so excited to start in the fall!", "expected_verdict": "positive", "expected_target_entities": ["Penn"], "note": "positive Penn"}
+{"text": "UCSF tuition is absolutely insane. I don't see how anyone affords it.", "expected_verdict": "negative", "expected_target_entities": ["UCSF"], "note": "negative cost complaint"}
+{"text": "What's the deadline for AADSAS this year? Can someone confirm?", "expected_verdict": "neutral", "expected_target_entities": [], "note": "informational question, no opinion"}
+{"text": "Visiting Boston University tomorrow, anyone been there?", "expected_verdict": "neutral", "expected_target_entities": ["Boston University"], "note": "neutral mention"}
+{"text": "I'd recommend NYU's program 100%. The faculty was amazing during my interview.", "expected_verdict": "positive", "expected_target_entities": ["NYU"], "note": "endorsement"}
+{"text": "Honestly, applying to Case felt like a waste. Their interview was unprofessional.", "expected_verdict": "negative", "expected_target_entities": ["Case"], "note": "negative complaint"}
+{"text": "Harvard accepted me but I'm leaning toward Columbia for the location.", "expected_verdict": "positive", "expected_target_entities": ["Harvard", "Columbia"], "note": "positive across two schools"}
+{"text": "Curious about UCLA's class size — does anyone have data?", "expected_verdict": "neutral", "expected_target_entities": ["UCLA"], "note": "neutral question"}

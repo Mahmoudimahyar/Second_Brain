@@ -1,0 +1,43 @@
+{
+  "engine": "postgres-age",
+  "status": "ok",
+  "notes": "AGE 1.5.x on Postgres. Property-filter Cypher executed via agtype. pgvector extension available for HNSW (Phase 3.5).",
+  "bulk_load_seconds": 142.48796940001193,
+  "nodes_loaded": 28403,
+  "edges_loaded": 41914,
+  "rss_peak_mb": 0.0,
+  "disk_footprint_mb": 0.0,
+  "queries": [
+    {
+      "name": "Q-A school-mentions-authors (3-hop)",
+      "sample_size": 30,
+      "median_ms": 1.6982499946607277,
+      "p95_ms": 2.156245004152879
+    },
+    {
+      "name": "Q-B forum-authors (2-hop)",
+      "sample_size": 30,
+      "median_ms": 3.0110999941825867,
+      "p95_ms": 3.690425000968389
+    },
+    {
+      "name": "Q-C reply-to-post (1-hop)",
+      "sample_size": 50,
+      "median_ms": 3.3164499909617007,
+      "p95_ms": 3.8640850107185543
+    },
+    {
+      "name": "Q-D property-filter-count",
+      "sample_size": 30,
+      "median_ms": 2.870450000045821,
+      "p95_ms": 3.4694250018219464
+    }
+  ],
+  "hnsw_recall_at_10": null,
+  "hnsw_supported": null,
+  "bitemporal_score": 3,
+  "bitemporal_notes": "Bitemporal via SQL columns / agtype properties; no native bitemporal operators. Standard WHERE clauses filter t_valid_*.",
+  "ops_score": 3,
+  "ops_notes": "Postgres server + AGE extension via Docker. Postgres operationally familiar; AGE extension version compat with Postgres major versions has historically been thorny.",
+  "measured_at": "2026-05-21T11:11:25.391127+00:00"
+}

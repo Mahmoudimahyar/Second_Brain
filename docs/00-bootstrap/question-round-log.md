@@ -1,0 +1,9 @@
+# Question Round Log
+
+| Round | Date | Questions asked | Answers received | Docs updated | Remaining gaps |
+|---|---|---|---|---|---|
+| 1 | 2026-05-20 | Q-001 (mode/scope), Q-002 (asset paths), Q-003 (slice), Q-004 (stack), Q-005 (ToS), Q-006 (downstream agents), Q-007 (budget+HITL) | Q-001 ✓, Q-002 deferred, Q-003 punted, Q-004 → research, Q-005 ✓, Q-006 ✓ (Claude's call: V2), Q-007 partial | project-mode.md, source-documents.md, assumptions.md, unresolved-questions.md, gap-register.md, memory, skill-usage-log.md, bootstrap-status.md | Q-002, Q-007, Q-008..Q-022 |
+| 2 | 2026-05-20 | Q-002 (paths, restated), Q-014 (slice ratify), Q-015 (HITL UX), Q-016 (numbers), Q-017 (gold set), Q-018 (plugin contract), Q-019 (multi-layer V1 scope) | Q-014 ✓ ratified; Q-019 ✓ all 3 layers; Q-018 ✓ (tool ingests dumps, doesn't crawl; outbound MCP for crawler); Q-016 deferred; Q-002 deferred; Q-015/Q-017 deferred | project-mode.md, source-documents.md, assumptions.md, unresolved-questions.md, gap-register.md, memory, product-vision.md, out-of-scope.md, skill-usage-log.md, bootstrap-status.md | Q-002, Q-016, Q-020, Q-021, Q-022 |
+| 3 | 2026-05-20 | Q-002 (asset locations, restated for the 3rd time), Q-020 (ADEA DB engine clarification), Q-016 (numbers, restated), Q-021 (crawler MCP surface inventory), Q-022 (open invitation: cost/accuracy methods) | Pending | assumptions.md, unresolved-questions.md, gap-register.md, memory, question-round-log.md, skill-usage-log.md, bootstrap-status.md, source-documents.md, system-overview.md (seeded) | Tracked in unresolved-questions.md |
+
+**Research streams in flight:** R-006 (live-source verify of R-001..R-005), R-007 (multi-source KG + trust tiers + conflict resolution at scale), R-008 (user-credibility + opinion-consensus + temporal-aware retrieval). All background, all dispatched 2026-05-20.

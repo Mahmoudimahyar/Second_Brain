@@ -1,0 +1,63 @@
+name: Bug report
+description: Something runs, but does the wrong thing (or crashes).
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. **Never paste real forum usernames, identifiable post
+        text, API keys, or licensed ADEA data into an issue** — redact or use a synthetic example.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Ingestion / source adapters
+        - Extraction passes (flows/)
+        - Entity resolution / alias matching
+        - Conflict resolution / trust tiers
+        - Retrieval / MCP servers
+        - Website crawler
+        - HITL queue
+        - Web console (web/)
+        - FastAPI backend (src/web/)
+        - Repo GraphRAG tooling (tools/graphrag/)
+        - Docs / doc-lint
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you ran, what you expected, what you got instead.
+      placeholder: |
+        Command:  secbrain ...
+        Expected: ...
+        Actual:   ...
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Smallest input that triggers it. A failing test is the gold standard.
+      render: shell
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / traceback
+      description: Paste the relevant structlog lines or traceback (secrets redacted).
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Commit SHA
+      placeholder: "git rev-parse --short HEAD"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "Windows 11 / Python 3.13 / Node 22 / kuzu 0.11.3"

@@ -1,0 +1,13 @@
+SecBrain
+Copyright 2026 Mahyar Mahmoudi
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+SCOPE OF THIS LICENSE
+---------------------
+The Apache-2.0 license covers the SOURCE CODE and DOCUMENTATION in this repository.
+
+This repository contains no datasets. It does not include, and the license does not cover,
+any corpus the engine has been run on, any third-party or licensed reference data, or any
+knowledge graph, embedding index, document store or other output built from such data.
+Content you ingest with SecBrain remains subject to its own owners' terms.

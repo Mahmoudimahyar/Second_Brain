@@ -1,0 +1,249 @@
+[project]
+name = "secbrain"
+version = "0.1.0"
+description = "Trust-tier-aware, self-correcting knowledge-graph engine: anchors noisy community text to authoritative ground truth, resolves conflicts, and answers with counted, cited evidence."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Mahyar Mahmoudi" }]
+keywords = [
+  "knowledge-graph", "graphrag", "rag", "entity-resolution", "conflict-resolution",
+  "truth-discovery", "bitemporal", "mcp", "llm", "kuzu",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+# V1 baseline dependencies (per docs/04-architecture/tech-stack.md).
+# Starting minimal — added as each phase lands.
+dependencies = [
+  "pydantic>=2.5",
+  "pyyaml>=6.0",
+  "typer>=0.12",
+  "rich>=13",
+  "structlog>=24",
+  "rapidfuzz>=3.9",
+  "orjson>=3.10",
+  "anytree>=2.12",
+  "mcp>=1.0,<2",    # 2.x changed the low-level Server API (list_tools / Tool.inputSchema)
+  "openpyxl>=3.1",  # L1 ADEA Excel adapter (FR-1.2)
+  "kuzu>=0.11",     # Graph store per ADR-001 (V1 winner)
+  "numpy>=1.26",    # imported at module level by src/research + src/retrieval
+]
+
+[project.urls]
+Homepage = "https://github.com/Mahmoudimahyar/Second_Brain"
+Repository = "https://github.com/Mahmoudimahyar/Second_Brain"
+Issues = "https://github.com/Mahmoudimahyar/Second_Brain/issues"
+Changelog = "https://github.com/Mahmoudimahyar/Second_Brain/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/Mahmoudimahyar/Second_Brain/tree/main/docs"
+
+[project.optional-dependencies]
+web = [
+  # FastAPI backend under src/web/ (`secbrain ui`, /api/v1/*).
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "httpx>=0.27",
+]
+analysis = [
+  # Pass-3 clustering, HybridIndex (TF-IDF leg), calibration, research statistics.
+  # Imported lazily with a helpful ImportError, so the core install stays light.
+  "scikit-learn>=1.3",
+  "scipy>=1.11",
+]
+embeddings = [
+  # Local embedders / NER (BGE-small, Qwen3-Embedding-0.6B, NuNER-Zero). Pulls torch.
+  "sentence-transformers>=2.7",
+  "gliner",
+]
+gateway = [
+  # Vendor SDKs for src/gateway/ adapters. Confined to that package per
+  # dependency-rules.md / non-negotiable #9 (ruff flake8-tidy-imports).
+  "anthropic>=0.30",
+  "openai>=1.40",        # also used by OpenAI-compat providers (xAI, NVIDIA NIM, Together)
+  "google-genai>=0.3",   # install when a GEMINI_API_KEY or Vertex creds are configured
+  "langfuse>=3.0",       # ADR-011 telemetry
+  "together>=1.0",       # optional native SDK; OpenAIAdapter handles Together via base_url
+]
+orchestration = [
+  # Prefect 3 flow scaffolds under `flows/` per ADR-010. Optional — `src.cli`
+  # commands work without it; flows add scheduling + retries + observability.
+  "prefect>=3",
+]
+
+# V1.6a — Website-crawl ingestion (ADR-019 + ADR-020).
+# crawl4ai is a hard dep — the slice exists for it. Trafilatura is
+# intentionally NOT imported in-process (subprocess shim per
+# known-issues.md §1); we only need its CLI on $PATH, not as a Python
+# dep here.
+website-crawl = [
+  "crawl4ai>=0.8,<0.9",
+  "pikepdf>=8",          # PDF metadata + repair
+  "tabula-py>=2.9",      # Robust HTML/PDF table extraction
+  "croniter>=2",         # Cadence parsing + next-run preview
+  "httpx>=0.27",         # Already present transitively; pinned here for clarity
+  "pandas>=2.0",         # pandas.read_html table extraction (ADR-019)
+  "lxml>=5",             # HTML parser backend for pandas.read_html
+]
+ocr = [
+  # Image OCR for crawled pages; opt-in per-domain (default off).
+  "easyocr>=1.7",
+]
+proxy = [
+  # Opt-in ScrapingBee fallback for protected domains. Default off.
+  "scrapingbee>=1.2",
+]
+
+dev = [
+  # Everything the full test suite needs on a clean machine. crawl4ai itself is mocked in
+  # tests, so only the light pieces of the website-crawl extra are pulled in here.
+  "secbrain[web,analysis]",
+  "croniter>=2",
+  "pandas>=2.0",
+  "lxml>=5",
+  "pytest>=8",
+  "pytest-asyncio>=0.23",
+  "pytest-cov>=5",
+  "pytest-benchmark>=4",  # V1.6a NFR-1.6a-1 perf benchmarks
+  "hypothesis>=6.100",
+  "freezegun>=1.5",
+  "respx>=0.21",
+  "pytest-httpx>=0.30",   # V1.6a adapter HTTP mocking (fixture-based)
+  "ruff>=0.6",
+  "mypy>=1.11",
+  "types-PyYAML>=6.0",
+]
+
+[project.scripts]
+graphrag-index = "tools.graphrag.index:index_command"
+graphrag-mcp = "tools.graphrag.mcp_server:main"
+graphrag-verify = "tools.graphrag.verify:main"
+secbrain = "src.cli:cli"
+secbrain-mcp = "src.retrieval.mcp_server:main"
+secbrain-doc-lint = "tools.doc_lint.check_status_truth:main"
+
+[build-system]
+requires = ["setuptools>=77", "wheel"]  # >=77 for PEP 639 license metadata
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tools*", "src*"]
+exclude = ["tests*", "docs*", "External Data*", "data*", "evals*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "B",    # flake8-bugbear
+  "UP",   # pyupgrade
+  "SIM",  # flake8-simplify
+  "TID",  # flake8-tidy-imports
+  "PL",   # pylint
+  "RUF",  # ruff-specific
+]
+ignore = [
+  "E501",     # line-too-long (handled by formatter)
+  "PLR0913",  # too-many-arguments (Pydantic models)
+  "PLR2004",  # magic-numbers (allowed in tests)
+]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+# Vendor-SDK ban per A-046 / non-negotiable #9.
+# These imports are forbidden outside src/gateway/ and tests/gateway/.
+# Enforced at the file level via the section-overrides below.
+"anthropic" = { msg = "Use src.gateway.LLMClient; direct vendor SDK imports are forbidden outside src/gateway/." }
+"openai" = { msg = "Use src.gateway.LLMClient; direct vendor SDK imports are forbidden outside src/gateway/." }
+"google.genai" = { msg = "Use src.gateway.LLMClient; direct vendor SDK imports are forbidden outside src/gateway/." }
+"langchain" = { msg = "LangChain is banned per docs/04-architecture/dependency-rules.md." }
+"requests" = { msg = "Use httpx; requests is banned per dependency-rules.md." }
+
+[tool.ruff.lint.per-file-ignores]
+"src/gateway/**/*.py" = ["TID251"]
+"tests/gateway/**/*.py" = ["TID251"]
+"tests/**/*.py" = ["PLR2004"]
+# Bake-off harness is one-shot research code (per `docs/05-features/bake-off-graph-db/`);
+# driver complexity (PLR0912/PLR0915) is inherent and not worth refactoring.
+"tools/bake_off/**/*.py" = ["PLR0912", "PLR0915", "SIM105"]
+# FastAPI's Body/Query/Path/Depends call-in-default is the documented
+# convention — `B008` doesn't apply. The error-code dispatch function
+# is inherently many-armed; `PLR0911` would force a less-readable dict.
+"src/web/**/*.py" = ["B008", "PLR0911"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+exclude = ["build/", "dist/", "External Data/", "data/"]
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+
+# Third-party libs that ship without type stubs.
+[[tool.mypy.overrides]]
+module = ["openpyxl", "openpyxl.*"]
+ignore_missing_imports = true
+
+# Vendor LLM SDKs — optional at install time; deferred imports in src/gateway/.
+[[tool.mypy.overrides]]
+module = ["anthropic", "anthropic.*", "openai", "openai.*", "google", "google.*"]
+ignore_missing_imports = true
+
+# ML stacks with no type stubs
+[[tool.mypy.overrides]]
+module = ["sklearn", "sklearn.*", "sentence_transformers", "sentence_transformers.*", "gliner", "gliner.*"]
+ignore_missing_imports = true
+
+# V1.6a website-crawl deps that ship without stubs
+[[tool.mypy.overrides]]
+module = ["pandas", "pandas.*", "pikepdf", "pikepdf.*", "crawl4ai", "crawl4ai.*", "tabula", "tabula.*", "croniter", "croniter.*", "scrapingbee", "scrapingbee.*", "easyocr", "easyocr.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+  "unit: fast in-process tests with no external deps",
+  "integration: tests that touch SQLite / temp graph DB / fixtures",
+  "contract: MCP tool contract tests",
+  "property: hypothesis property-based tests",
+  "e2e: end-to-end on frozen fixtures",
+  "eval: gold-set evaluation (slow; may call APIs)",
+  "regression: cost + performance regression tests",
+  "smoke: fast subset for pre-commit",
+  "security: security negative tests",
+]
+
+[tool.coverage.run]
+source = ["src", "tools"]
+omit = [
+  "*/tests/*",
+  "*/__init__.py",
+]
+
+[tool.coverage.report]
+fail_under = 80
+exclude_lines = [
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "if TYPE_CHECKING:",
+  "^\\s*\\.\\.\\.\\s*$",
+]

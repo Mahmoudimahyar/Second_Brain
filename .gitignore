@@ -1,0 +1,93 @@
+# dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.python-version
+
+# env
+.env
+.env.*
+!.env.example
+
+# build/cache
+dist/
+build/
+.next/
+out/
+coverage/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.benchmarks/
+htmlcov/
+*.tsbuildinfo
+
+# Prefect (per ADR-010)
+.prefect/
+
+# data dirs (V1 product engine local state; not committed)
+data/
+!data/.gitkeep
+
+# run outputs (logs, smoke graphs, crawl caches, probe dumps — regenerable)
+outputs/
+
+# External raw dumps (large + license-sensitive; never commit)
+External Data/
+
+# Real-text eval gold (verbatim third-party forum posts; never commit).
+# The tracked public gold is derived from it — see evals/README.md.
+evals/gold/private/
+
+# tools/graphrag local state
+tools/graphrag/logs/
+tools/graphrag/cache/
+
+# agent scratch
+.agent/scratch/
+.agent/tasks/
+.agent/notes/
+# loose one-off probe/measure/runner scratch (committed tooling lives in
+# cloud/ or .agent/reports/; promote with `git add -f` if a script is keeper)
+.agent/*.py
+.agent/*.ps1
+# agent run-state: large Kùzu graphs / caches / backups (never commit)
+.agent/run_*/
+.agent/dj_*/
+.agent/wp2_validation/
+*.bak
+*.edgecopy.csv
+
+# Claude Code / Cursor local settings (personal)
+.claude/
+.cursor/
+
+# Hypothesis (pytest) DB
+.hypothesis/
+
+# Abandoned nested project scratch
+my-new-project/
+
+# Lighthouse / API diagnostic outputs
+lh-*.json
+lh-*.html
+
+# Playwright artifacts
+test-results/
+playwright-report/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+
+# Full research-panel output: tabulates licensed per-school figures and named-school
+# rankings. The method + aggregate are tracked; see .agent/reports/research_panel/README.md
+.agent/reports/research_panel/report.md

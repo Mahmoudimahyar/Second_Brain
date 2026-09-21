@@ -1,0 +1,6 @@
+# Which dependencies may run install scripts (pnpm >= 10 blocks them by default).
+# esbuild + sharp ship native binaries and need their postinstall; msw does not.
+allowBuilds:
+  esbuild: true
+  msw: false
+  sharp: true

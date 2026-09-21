@@ -1,0 +1,60 @@
+{
+  "scores": [
+    {
+      "engine": "neo4j",
+      "raw": {
+        "M1_load": 5.26585680001881,
+        "M2_three_hop_p95": 4.263434995664284,
+        "M3_hnsw_recall_at_10": 1.0,
+        "M4_bitemporal_score": 4.0,
+        "M5_ops_score": 2.0
+      },
+      "normalized": {
+        "M1_load": 1.0,
+        "M2_three_hop_p95": 0.0,
+        "M3_hnsw_recall_at_10": 1.0,
+        "M4_bitemporal_score": 1.0,
+        "M5_ops_score": 0.0
+      },
+      "weighted_total": 0.6000000000000001
+    },
+    {
+      "engine": "kuzu",
+      "raw": {
+        "M1_load": 165.22444469999755,
+        "M2_three_hop_p95": 2.457965000940021,
+        "M3_hnsw_recall_at_10": 1.0,
+        "M4_bitemporal_score": 3.0,
+        "M5_ops_score": 5.0
+      },
+      "normalized": {
+        "M1_load": 0.0,
+        "M2_three_hop_p95": 0.8568140518877797,
+        "M3_hnsw_recall_at_10": 1.0,
+        "M4_bitemporal_score": 0.0,
+        "M5_ops_score": 1.0
+      },
+      "weighted_total": 0.5642035129719449
+    },
+    {
+      "engine": "postgres-age",
+      "raw": {
+        "M1_load": 142.48796940001193,
+        "M2_three_hop_p95": 2.156245004152879,
+        "M3_hnsw_recall_at_10": 1.0,
+        "M4_bitemporal_score": 3.0,
+        "M5_ops_score": 3.0
+      },
+      "normalized": {
+        "M1_load": 0.14213976003715795,
+        "M2_three_hop_p95": 1.0,
+        "M3_hnsw_recall_at_10": 1.0,
+        "M4_bitemporal_score": 0.0,
+        "M5_ops_score": 0.3333333333333333
+      },
+      "weighted_total": 0.5284279520074316
+    }
+  ],
+  "winner": "kuzu",
+  "tiebreak_reason": "margin 0.036 < 0.10 ->M5 ops tiebreak flipped to kuzu"
+}

@@ -1,0 +1,43 @@
+{
+  "engine": "neo4j",
+  "status": "ok",
+  "notes": "Neo4j 5 native HNSW vector index available; not exercised here.",
+  "bulk_load_seconds": 5.26585680001881,
+  "nodes_loaded": 28403,
+  "edges_loaded": 41914,
+  "rss_peak_mb": 0.0,
+  "disk_footprint_mb": 0.0,
+  "queries": [
+    {
+      "name": "Q-A school-mentions-authors (3-hop)",
+      "sample_size": 30,
+      "median_ms": 2.775200002361089,
+      "p95_ms": 4.263434995664284
+    },
+    {
+      "name": "Q-B forum-authors (2-hop)",
+      "sample_size": 30,
+      "median_ms": 6.374149990733713,
+      "p95_ms": 7.684555002197158
+    },
+    {
+      "name": "Q-C reply-to-post (1-hop)",
+      "sample_size": 50,
+      "median_ms": 1.9586499984143302,
+      "p95_ms": 3.2051349902758366
+    },
+    {
+      "name": "Q-D property-filter-count",
+      "sample_size": 30,
+      "median_ms": 3.4459499875083566,
+      "p95_ms": 4.926959998556414
+    }
+  ],
+  "hnsw_recall_at_10": null,
+  "hnsw_supported": true,
+  "bitemporal_score": 4,
+  "bitemporal_notes": "Native t_valid_*/t_ingest_* exposure via Graphiti (when used). Raw Neo4j supports property-based filtering with WHERE clauses; Graphiti adds first-class operators.",
+  "ops_score": 2,
+  "ops_notes": "Docker compose for Neo4j Community; JVM heap tuning required; separate process to manage. GPLv3 license + single-DB limit on Community edition.",
+  "measured_at": "2026-05-21T10:59:37.223426+00:00"
+}

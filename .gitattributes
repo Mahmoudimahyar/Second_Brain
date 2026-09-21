@@ -1,0 +1,42 @@
+# Normalize line endings: LF in the repo, native on checkout where it matters.
+* text=auto eol=lf
+
+# Windows-native scripts keep CRLF
+*.ps1  text eol=crlf
+*.psm1 text eol=crlf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# Binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.pdf  binary
+*.parquet binary
+*.sqlite  binary
+*.db   binary
+
+# Keep generated / vendored files out of GitHub's language stats and collapsed in diffs
+web/pnpm-lock.yaml                          linguist-generated=true
+web/src/lib/api/generated/**                linguist-generated=true
+evals/gold/*.jsonl                          linguist-generated=true
+docs/**                                     linguist-documentation=true
+PROMPTS/**                                  linguist-documentation=true
+.agent/reports/**                           linguist-documentation=true
+
+# --- Public snapshot exclusions -------------------------------------------------------
+# `git archive` (used to build the public mirror) skips these. They stay versioned in the
+# private development repository: run reports, corpus operations, the data product, and
+# internal planning notes are tied to a private corpus and are not part of the tool.
+.agent/                                         export-ignore
+cloud/                                          export-ignore
+pack/                                           export-ignore
+scripts/                                        export-ignore
+PROMPTS/V1.*_PROMPT.md                          export-ignore
+PROMPTS/ROUND_*_PROMPT.md                       export-ignore
+docs/00-bootstrap/source-documents.md           export-ignore
+docs/01-core/business-context.md                export-ignore
+docs/05-features/v1.7-evidence-dossier-brief.md export-ignore

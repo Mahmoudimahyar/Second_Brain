@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "secbrain-graphrag": {
+      "command": "python",
+      "args": ["-m", "tools.graphrag.mcp_server"],
+      "env": {
+        "GRAPHRAG_DB_PATH": "./data/graph/repo.db"
+      }
+    },
+    "secbrain-v1": {
+      "command": "python",
+      "args": ["-m", "src.retrieval.mcp_server"],
+      "env": {
+        "SECBRAIN_DATA_DIR": "./data"
+      }
+    }
+  }
+}
